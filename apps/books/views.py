@@ -4,8 +4,10 @@ from rest_framework import status
 
 from apps.books.models import Book
 from apps.books.serializers import BookSerializer
+from apps.books.permissions import IsAdminOrReadOnly
 
 class BookListAV(APIView):
+    permission_classes = [IsAdminOrReadOnly]
     def get(self, request):
         books = Book.objects.all()
         serializer = BookSerializer(books, many=True)
@@ -20,6 +22,7 @@ class BookListAV(APIView):
             return Response(serializer.errors)
         
 class BookDetailsAV(APIView):
+    permission_classes = [IsAdminOrReadOnly]
     def get(self, request, id):
         try:
             book = Book.objects.get(pk=id)
