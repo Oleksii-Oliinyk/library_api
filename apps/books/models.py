@@ -3,7 +3,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
-class Book(models.Models):
+class Book(models.Model):
     name = models.CharField(max_length=150)
     author = models.CharField(max_length=150)
     published_year = models.PositiveIntegerField(default=datetime.date.today().year, 
