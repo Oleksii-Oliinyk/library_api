@@ -1,5 +1,5 @@
 from django.urls import path, include
 
 urlpatterns = [
-    path('books/', include('apps.books.urls')),
+    path('book/', include('apps.books.urls')),
 ]
