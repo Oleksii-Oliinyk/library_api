@@ -44,6 +44,12 @@ class ReturningAV(APIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
         except Borrowing.DoesNotExist:
             return Response({"error":"You didn't borrow this book!"}, status=status.HTTP_404_NOT_FOUND)
+        
+class BorrowListAV(APIView):
+    def get(self, request):
+        borrowed_list = Borrowing.objects.filter(user=request.user)
+        serializer = BorrowingSerializer(borrowed_list, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
         
             
