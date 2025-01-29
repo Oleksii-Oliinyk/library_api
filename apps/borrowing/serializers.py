@@ -1,14 +1,25 @@
 from rest_framework import serializers
-from apps.borrowing.models import Borrowing
+from apps.borrowing.models import Borrowing, Review
+from django.contrib.auth.models import User
+from apps.books.models import Book
+
+# class ReviewSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Review
+#         fields = '__all__'
 
 class BorrowingSerializer(serializers.ModelSerializer):
-    # user = serializers.SerializerMethodField()
-    # book = serializers.SerializerMethodField()
-    
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    user_name = serializers.SerializerMethodField()
+
+    book = serializers.PrimaryKeyRelatedField(queryset=Book.objects.all())
+    book_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Borrowing
-        fields = '__all__'
-        
+        fields = ['id', 'user', 'user_name', 'book', 'book_name', 'borrow_date', 'due_date', 'is_returned', 'return_date']
+    
+
     def validate(self, data):
         book = Borrowing.objects.filter(user=data['user'], book=data['book'], is_returned=False)
         if book.exists():
@@ -19,10 +30,10 @@ class BorrowingSerializer(serializers.ModelSerializer):
         if not value.available:
             raise serializers.ValidationError("This book is currently unavailable")
         return value
-    
-    # def get_user(self, obj):
-    #     return obj.user.username
-    
-    # def get_book(self, obj):
-    #     return obj.book.name
+
+    def get_user_name(self, obj):
+        return obj.user.username
+
+    def get_book_name(self, obj):
+        return obj.book.name
     

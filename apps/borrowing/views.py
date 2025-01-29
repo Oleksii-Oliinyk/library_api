@@ -31,15 +31,18 @@ class BorrowingAV(APIView):
             return Response({"error":"This book doesn't exists!"},status=status.HTTP_404_NOT_FOUND)
         
 class ReturningAV(APIView):
+    
     def post(self, request, id):
         try:
             borrowed_book = Borrowing.objects.filter(user=request.user, book=id).last()
             borrowed_book.is_returned = True
             borrowed_book.return_date = datetime.date.today()
             borrowed_book.save()
+            
             book = Book.objects.get(pk=id)
             book.available = True
             book.save()
+            
             serializer = BorrowingSerializer(borrowed_book)
             return Response(serializer.data,status=status.HTTP_200_OK)
         except Borrowing.DoesNotExist:
