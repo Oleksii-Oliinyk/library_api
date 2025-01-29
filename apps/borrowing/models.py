@@ -11,10 +11,3 @@ class Borrowing(models.Model):
     is_returned = models.BooleanField(default=False)
     return_date = models.DateField(blank=True, null=True)
     
-class Review(models.Model):
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="review_book")
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-    rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
-    comment = models.TextField(blank=True, null=True)
-    

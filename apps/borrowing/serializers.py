@@ -1,12 +1,7 @@
 from rest_framework import serializers
-from apps.borrowing.models import Borrowing, Review
+from apps.borrowing.models import Borrowing
 from django.contrib.auth.models import User
 from apps.books.models import Book
-
-# class ReviewSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Review
-#         fields = '__all__'
 
 class BorrowingSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
@@ -18,7 +13,6 @@ class BorrowingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Borrowing
         fields = ['id', 'user', 'user_name', 'book', 'book_name', 'borrow_date', 'due_date', 'is_returned', 'return_date']
-    
 
     def validate(self, data):
         book = Borrowing.objects.filter(user=data['user'], book=data['book'], is_returned=False)
