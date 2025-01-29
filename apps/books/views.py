@@ -41,6 +41,10 @@ class BookDetailsAV(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
-        book = Book.objects.get(pk=id)
+        try: 
+            book = Book.objects.get(pk=id)
+        except Book.DoesNotExist:
+            return Response({"Error":"No such book!"}, status=status.HTTP_404_NOT_FOUND)
+
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

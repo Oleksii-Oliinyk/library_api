@@ -14,7 +14,8 @@ class ReviewSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"error": "You haven't read this book!"})
         if not borrowing.last().is_returned:
             raise serializers.ValidationError({"error": "You haven't returned this books yet!"})
-        review = Review.objects.filter(book = data['book'], user = data['user'])
-        if review.exists():
-            raise serializers.ValidationError({"error": "You have already reviewed this book!"})
+        if self.instance is None:
+            review = Review.objects.filter(book = data['book'], user = data['user'])
+            if review.exists():
+                raise serializers.ValidationError({"error": "You have already reviewed this book!"})
         return data
