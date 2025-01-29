@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from apps.reviews.models import Review
 from apps.reviews.serializers import ReviewSerializer
+from apps.reviews.permissions import IsReviewUserOrReadOnly
 
 class ReviewListAV(APIView):
     permission_classes = [IsAuthenticated]
@@ -27,4 +28,17 @@ class ReviewListAV(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+class ReviewDetalisAV(APIView):
+    permission_classes = [IsReviewUserOrReadOnly]
+    
+    def get(self, request, book_id, review_id):
+        try:
+            review = Review.objects.get(pk=review_id, book=book_id)
+        except Review.DoesNotExist:
+            return Response({"error":"No such review!"}, status=status.HTTP_400_BAD_REQUEST)
+        serializer = ReviewSerializer(review)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
         
