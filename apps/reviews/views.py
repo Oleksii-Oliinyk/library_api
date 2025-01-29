@@ -64,3 +64,10 @@ class ReviewDetalisAV(APIView):
         review.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+class UserReviewsAV(APIView):
+    permission_classes = [IsReviewUserOrReadOnly]
+
+    def get(self, request):
+        review = Review.objects.filter(user=request.user)
+        serializer = ReviewSerializer(review, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
