@@ -9,6 +9,7 @@ class Book(models.Model):
     published_year = models.PositiveIntegerField(default=datetime.date.today().year, 
                                                  validators=[MinValueValidator(1000), 
                                                  MaxValueValidator(datetime.date.today().year)])
+    avg_rating = models.FloatField(default=0.0)
     description = models.CharField(max_length=300)
     available = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)

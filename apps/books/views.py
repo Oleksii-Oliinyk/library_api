@@ -27,7 +27,7 @@ class BookDetailsAV(APIView):
         try:
             book = Book.objects.get(pk=id)
         except Book.DoesNotExist:
-            return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = BookSerializer(book)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

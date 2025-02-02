@@ -10,3 +10,5 @@ class Review(models.Model):
     rating = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(5)])
     comment = models.TextField(blank=True, null=True)
     
+    def __str__(self):
+        return str(self.rating) + " | " + self.book.name + " | " + self.user.username

@@ -43,7 +43,7 @@ def get_profile_info(request):
         borrowed_list = Borrowing.objects.filter(user=request.user)
         review_list = Review.objects.filter(user=request.user)
         serialized_borrowed_list = BorrowingSerializer(borrowed_list, many=True)
-        serialized_review_list = RegistrationSerializer(review_list, many=True)
+        serialized_review_list = ReviewSerializer(review_list, many=True)
         data = {
             'username':request.user.username, 
             "email":request.user.email,

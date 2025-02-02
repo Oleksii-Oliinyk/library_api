@@ -11,3 +11,5 @@ class Borrowing(models.Model):
     is_returned = models.BooleanField(default=False)
     return_date = models.DateField(blank=True, null=True)
     
+    def __str__(self):
+        return f"{self.user.username} | {self.book.name}"
